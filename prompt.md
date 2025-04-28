@@ -1,5 +1,5 @@
 ## 为什么prompt需要优化  
-transformer架构的语言大模型，其本质在于利用前一个token预测下一个token。因此prompt中最后一个token就是模型预测输入的第一个token的输入，注意力机制可以将距离比较远的token的语义结合到最后一个token中（对于注意力机制的理解可以参看[视频](https://www.bilibili.com/video/BV13z421U7cs/?spm_id_from=333.1387.collection.video_card.click&vd_source=d82de55cfde970cdf86016bef2c6de4e)）  
+transformer架构的语言大模型，其本质在于利用前一个token预测下一个token。因此prompt中最后一个token就是模型预测输入的第一个token的输入，注意力机制可以将距离比较远的token的语义结合到最后一个token中（对于注意力机制的理解可以参看[视频](https://www.bilibili.com/video/BV13z421U7cs/?spm_id_from=333.1387.collection.video_card.click&vd_source=d82de55cfde970cdf86016bef2c6de4e)）。  
 因此，prompt整体的内容将决定了模型输出的内容。如果假设大模型是正确的，那么如果得不到想要的内容，就是prompt的问题。因此对prompt进行优化就非常重要。  
 
 ## prompt优化思路
@@ -61,3 +61,20 @@ prompt：这是今天的新闻标题“韩景敏：本土植物做染料 绘就�
 *韩景敏与新疆植物染料艺术*
 ```
 这样一来就可以在后续的应用中使用正则表达式从输出中提取我们想要的内容了。  
+
+## 系统优化思路(CRISPE框架)
+
+以上提到的prompt优化方法并不是独立的，可以使用一个提问框架很自然的构建比较优秀的prompt。  
+CRISPE框架为：  
+- CR：Capacity and Role（能力和角色），让ai扮演一个角色
+- I：Insight（洞察），提供背景信息和上下文
+- S：Statement（陈述），你希望ai做什么
+- P：Personality（个性），你希望ai以什么风格回答
+- E：Experiment（实验），要求ai给你提供多个答案
+
+这个框架中，CR就是上面提到的Role prompt，而I就可以相当于One-shot或者Few-shot的prompt，P就相当于Chain-of-Thought。  
+
+## prompt的持续优化
+当我们需要大模型来完成一些复杂的工作时，需要不断迭代prompt。  
+除了人工调节prompt，也可以让机器生成。论文AUTOPROMPT: Eliciting Knowledge from Language Models
+ with Automatically Generated Prompts(https://arxiv.org/pdf/2010.15980)介绍了一种自动生成prompts的方法。

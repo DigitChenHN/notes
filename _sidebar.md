@@ -8,4 +8,7 @@
 - [blender](blender/README.md)
 - [regex](regex.md)
 - [mysql](mySQL.md)
+- [redis](redis.md)
 - [pytorch](pytorch/README.md)
+- [prompt优化](prompt.md)
+- [python](python/README.md)
