@@ -6,3 +6,4 @@
 - [多重插补](/machine_learning/多重插补.md)
 - [提升方法boosting](/machine_learning/提升方法(boosting).md)
 - [逻辑回归](/machine_learning/logistics.md)
+- [Welch t检验](/machine_learning/Welch_t检验.md)

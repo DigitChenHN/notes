@@ -38,3 +38,25 @@ $$
 
 > 从计算机计算的角度来看，求极值可以一般可以用梯度下降法。  
 
+## 使用sklearn实现逻辑回归
+```python 
+import numpy as np 
+import sklearn.linear_model as lm 
+
+x_features = np.array([[-1, -2], [-2, -1], [-3, -2], [1, 3], [2, 1], [3, 2]])
+y_targets = np.array([0, 0, 0, 1, 1, 1]) 
+
+lr_clf = lm.LogisticRegression()
+lr_clf.fit(x_features, y_targets)
+
+y = lr_clf.predict(np.array([[0, 1]]))
+```
+在sklearn库中的这个`LogisticRegression`类中，默认使用的是L2正则化，并且使用的是solver为`lbfgs`的优化算法。  
+这个类有几个重要的参数需要理解一下：  
+1. penalty：正则化项的类型，默认为`l2`，也可以选择`l1`、`elasticnet`、`none`。
+   - 正则化项是在损失函数之后添加的一项，用于防止模型过拟合。
+   - `l2`：L2正则化，也称为岭回归，它在损失函数中添加了权重的平方和的惩罚项，该项写为$\alpha ||w||_2=\alpha \sqrt{\sum_{i=1}^{n}{w_i^2}}$
+   - `l1`：L1正则化，也称为Lasso回归，它在损失函数中添加了权重的绝对值的惩罚项，该项写为$\alpha ||w||_1=\alpha \sum_{i=1}^{n}{|w_i|}$
+   - 为什么正则化能够防止过拟合，[文章](https://blog.csdn.net/zlrai5895/article/details/84947942)做了很详细的介绍。  
+2. solver：优化算法的选择， {‘lbfgs’, ‘liblinear’, ‘newton-cg’, ‘newton-cholesky’, ‘sag’, ‘saga’}, 默认值为 ‘lbfgs’
+3. max_iter：最大迭代次数，默认为100。

@@ -19,7 +19,7 @@ transformer架构的语言大模型，其本质在于利用前一个token预测�
 
 其中Few-shot和Chain-of-thought效果比较稳定。
 
-## 个人的一个prompt优化过程
+## 个人的一个prompt优化过程案例
 场景：希望模型能够根据给定的一个新闻标题，生成指定数量的关键词或者关键句。  
 初始prompt:这是今天的新闻标题“印度未事先通知突然开闸泄洪”，为了能够更好的了解这则新闻的内容，需要你根据这则新闻标题进行延申，生成5个关键词或者句子，方便我在搜索引擎搜索。  
 输出：
@@ -76,5 +76,5 @@ CRISPE框架为：
 
 ## prompt的持续优化
 当我们需要大模型来完成一些复杂的工作时，需要不断迭代prompt。  
-除了人工调节prompt，也可以让机器生成。论文AUTOPROMPT: Eliciting Knowledge from Language Models
- with Automatically Generated Prompts(https://arxiv.org/pdf/2010.15980)介绍了一种自动生成prompts的方法。
+除了人工调节prompt，也可以让机器生成。论文[AUTOPROMPT: Eliciting Knowledge from Language Models
+ with Automatically Generated Prompts](https://arxiv.org/pdf/2010.15980)介绍了一种自动生成prompts的方法。
