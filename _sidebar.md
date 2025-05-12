@@ -12,3 +12,4 @@
 - [pytorch](pytorch/README.md)
 - [prompt优化](prompt.md)
 - [python](python/README.md)
+- [如何做一只产品经理](产品经理/README.md)

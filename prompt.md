@@ -76,5 +76,5 @@ CRISPE框架为：
 
 ## prompt的持续优化
 当我们需要大模型来完成一些复杂的工作时，需要不断迭代prompt。  
-除了人工调节prompt，也可以让机器生成。论文[AUTOPROMPT: Eliciting Knowledge from Language Models
- with Automatically Generated Prompts](https://arxiv.org/pdf/2010.15980)介绍了一种自动生成prompts的方法。
+除了人工调节prompt，也可以让机器生成。论文[AUTOPROMPT: Eliciting Knowledge from Language Models  
+ with Automatically Generated Prompts](https://arxiv.org/pdf/2010.15980)介绍了一种自动生成prompts的方法。  
