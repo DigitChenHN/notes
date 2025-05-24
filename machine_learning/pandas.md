@@ -103,4 +103,8 @@ df = df[~(df['A'] == 9)]
 - 去除nan值，`DataFrame.dropna(*, axis=0, how=<no_default>, thresh=<no_default>, subset=None, inplace=False, ignore_index=False)`，其中*subset*可以用来指定列名从而选定查找nan值的列；*how*可以是`any`或者`all`，分别代表只要存在nan值就删除整行，或者必须所有列都存在nan值才删除整行。  
 - 去除重复值删除重复的行，`DataFrame.drop_duplicates(subset=None, *, keep='first', inplace=False, ignore_index=False)`
 
-## 一些复杂的操作
+## 一些复杂索引的操作
+---------------------未完待续----------------
+
+## 数据分析常用计算  
+有一个二维表，每一列列为各个特征，考虑做相关性系数分析，可以使用`DataFrame.corr(method='pearson')`可以实现快捷的相关性系数计算。这个函数返回的是一个代表相关性系数的DataFrame。

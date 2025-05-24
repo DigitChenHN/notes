@@ -7,3 +7,4 @@
 - [提升方法boosting](/machine_learning/提升方法(boosting).md)
 - [逻辑回归](/machine_learning/logistics.md)
 - [Welch t检验](/machine_learning/Welch_t检验.md)
+- [Lasso回归方法](/machine_learning/Lasso.md)   
