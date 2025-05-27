@@ -30,7 +30,7 @@ vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(texts)
 
 # 输出词汇表
-print("词汇表：", vectorizer.get_feature_names())
+print("词汇表：", vectorizer.get_feature_names_out())
 
 # 输出词袋模型矩阵
 print("词袋模型矩阵：")
@@ -59,6 +59,7 @@ print(X.toarray())
 - `ngram_range`：接收一个元组，用来指定n-gram的范围，默认是(1, 1)，表示只考虑单个单词。可以设置为(1, 2)，表示考虑单个单词和二元组（2-gram）。*关于n-gram的概念在[下节](#n-gram)会有介绍。*
 
 实例化类`CountVectorizer`之后，得到的对象最重要的一个方法就是`fit_transform()`，该方法接收一个`list[str] | ndarray | Iterable`类型的参数，表示要分析的文本数据。该方法会返回一个`scipy.sparse.csr_matrix`类型的对象，表示词袋模型矩阵。  
+此外还有一个方法`get_feature_names_out()`，可以用来获取词汇表中的特征名称。返回的数据是一个元素为字符串的ndarray，表示词汇表中的单词。  
 
 
 词袋法虽然简单易用，但是存在很多缺点：  
@@ -87,9 +88,12 @@ print('文本矩阵：\n', X.toarray())
    [[0 1 0 1 1 1 1]
     [1 1 1 0 0 1 1]]
 ```
-在词袋法中使用n-gram的有点是可以在一定程度上保留单词的顺序信息，但是仍然存在维度较高，转换的矩阵稀疏等问题。
+在词袋法中使用n-gram的有点是可以在一定程度上保留单词的顺序信息，但是仍然存在维度较高，转换的矩阵稀疏等问题。  
+
+## ngram文本评估  
+
 
 ## TF-IDF 
 [关于TF-IDF](https://www.cnblogs.com/Luv-GEM/p/10543612.html)的介绍可以参考这篇文章。  
 
-***以上介绍的是传统nlp中tokenization的一些概念，结合一些机器学习方法对于一些文本分类任务可以有不错的效果。但是精确的文本生成任务现在主要依靠基于深度学习的方法，深度学习的方法tokenization几乎绑定了embedding向量化的方法。***
+***以上介绍的是传统nlp中tokenization的一些概念，结合一些机器学习方法可以实现简单的nlp任务比如文本分类等。但是精确的文本生成任务现在主要依靠基于深度学习的方法，深度学习的方法tokenization几乎绑定了embedding向量化的方法。***
