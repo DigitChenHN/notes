@@ -10,7 +10,6 @@
 - [mysql](mySQL.md)
 - [redis](redis.md)
 - [pytorch](pytorch/README.md)
-- [prompt优化](prompt.md)
 - [python](python/README.md)
 - [如何做一只产品经理](产品经理/README.md)
 - [natural language processing](natural_language_process/README.md)

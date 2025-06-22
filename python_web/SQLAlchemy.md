@@ -21,7 +21,7 @@ def create_app(config_class=Config):
 ```
 这里关于Config这个配置类是如何定义的，我们暂时不做了解，只需要知道其中定义了一个SQLALCHEMY_DATABASE_URI配置项，该配置项用于指定数据库的连接信息。  
 该配置项的值是一个字符串，格式为：dialect+driver://username:password@host:port/database。  
-比如“sqlite:///app.db”，表示使用SQLite数据库，数据库文件名为app.db。这样一来就在项目根目录处生成了一个app.db的数据库文件。除了在项目代码中使用SQLAlchemy之外，也可也使用python的sqlite3模块来操作这个数据库文件，这部分应该会在[sqlite3](/python_web/sqlite3.md)中介绍。  
+比如“sqlite:///app.db”，表示使用SQLite数据库，数据库文件名为app.db。这样一来就在项目根目录处生成了一个app.db的数据库文件。除了在项目代码中使用SQLAlchemy之外，也可也使用python的sqlite3模块来操作这个数据库文件，这部分会在[sqlite3](/python_web/sqlite3.md)中介绍。  
 其中dialect表示数据库的类型，driver表示数据库的驱动，username表示用户名，password表示密码，host表示主机，port表示端口号，database表示数据库名。  
 除了SQLite之外，SQLAlchemy还支持MySQL、PostgreSQL、Oracle、Microsoft SQL Server等多种数据库。  
 
