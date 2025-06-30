@@ -79,7 +79,7 @@ WHERE后面跟的是一个条件，经常使用的是`>`，`=`，`<`，`>=`，`<
 其中特别注意的有：  
 - `IN`，`SELECT * FROM table_name WHERE column_name IN (value1, value2, ...)`
 - `LIKE`关键词，用来表示模糊匹配，后面的匹配模式中，`%`表示任意多个字符，`_`表示任意一个字符。跟正则表达式类似。  
-- 如果匹配模式比较负责，则需要使用`REGEXP`关键词。`SELECT * FROM table_name WHERE column_name REGEXP 'pattern'`  
+- 如果匹配模式比较复杂，则需要使用`REGEXP`关键词。`SELECT * FROM table_name WHERE column_name REGEXP 'pattern'`  
 - 如果特别需要匹配空值，则使用`IS NULL`关键词。而不能用`=`。
 
 ### 排序ORDER BY  

@@ -10,6 +10,7 @@ from flask import Flask
 from config import Config
 
 app = Flask(__name__) 
+db = SQLAlchemy() 
 
 def create_app(config_class=Config):
     app.config.from_object(config_class) # 设定app的配置文件
@@ -28,6 +29,7 @@ def create_app(config_class=Config):
 ## 定义数据库模型
 在一个web服务中，需要使用数据库来存储用户的各种数据。  
 ```python 
+# app/models/user_location.py
 from datetime import datetime
 from app import db
 
@@ -37,7 +39,7 @@ class UserLocation(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    city = db.Column(db.String(100))
+    city = db.Column(db.String(100))      
     last_updated = db.Column(db.DateTime, default=datetime.utcnow)
     
     def __repr__(self):
@@ -80,7 +82,7 @@ import UserLocation
 user_location = UserLocation.query.filter_by(user_id=self.user_id).first()
 ```
 `query.filter_by()`方法用于查询数据库中符合条件的，first()将会返回查询到的第一个结果。  
-整个语句返回的是一条数据库记录（作为一个python的对象），因此可以用对象的属性来访问该条数据的值，比如`user_location.latitude`。  
+整个语句返回的是一条数据库记录（作为一个Query对象），因此可以用对象的属性来访问该条数据的值，比如`user_location.latitude`。  
 
 ## 修改数据库数据
 当需要修改数据库时，直接修改对象的属性，并且在最后将修改通过`db.session.commit()`提交即可。
@@ -100,3 +102,79 @@ user_location = UserLocation.query.filter_by(user_id=current_user.id).first()
 db.session.delete(user_location)
 db.session.commit()
 ```
+
+## 数据库迁移
+```python
+class UserLocation(db.Model):
+    """用户位置模型"""
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    city = db.Column(db.String(100))      
+    last_updated = db.Column(db.DateTime, default=datetime.utcnow)
+```
+这个类实际上定义了数据库中的一个表，而当我们初始化数据库甚至是已经添加了数据进入数据库后，如果还想更改数据库的结构，比如添加一个字段，那么就需要使用数据库迁移工具。使用数据库迁移工具可以帮助我们在不丢失原来数据的情况下修改数据库的结构，这对于已经上线了的应用很重要。  
+常用的数据库迁移工具有Alembic和Flask-Migrate。Flask-Migrate是Flask的一个扩展，它基于Alembic实现了数据库迁移功能。  
+Flask-Migrate提供了命令行工具，可以方便地进行数据库迁移操作，其具体的操作是会在项目文件夹下生成一个migrations文件夹，里面包含了数据库迁移的脚本。  
+但是在使用命令行进行数据库迁移之前，我们需要将整个app的上下文与和alemnic迁移工具进行绑定。  
+前面为了给app绑定数据库，在`__init__.py`中绑定了db对象，现在我们需要在`__init__.py`中绑定Alembic的迁移工具。  
+```python
+# __init__.py
+from flask_sqlalchemy import SQLAlchemy   
+from flask import Flask
+from config import Config
+
+from flask_migrate import Migrate
+
+app = Flask(__name__) 
+db = SQLAlchemy() 
+migrate = Migrate()  
+
+def create_app(config_class=Config):
+    app.config.from_object(config_class)
+
+    db = SQLAlchemy() 
+    db.init_app(app)
+    migrate.init_app(app, db)  # 绑定Alembic迁移工具
+
+    return app
+```
+这样一来，当需要修改数据库的结构时，可以直接更改项目中的模型了，然后使用Flask-Migrate提供的命令行工具进行数据库迁移。  
+```python
+# app/models/user_location.py
+from datetime import datetime
+from app import db
+
+class UserLocation(db.Model):
+    """用户位置模型"""
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    city = db.Column(db.String(100))      
+    last_updated = db.Column(db.DateTime, default=datetime.utcnow)
+
+    ## 添加一个新的字段
+    country = db.Column(db.String(100))  # 新增国家字段
+    
+    def __repr__(self):
+        return f'<UserLocation {self.city} ({self.latitude}, {self.longitude})>'
+```
+```bash
+# 初始化数据库迁移目录
+flask db init
+```
+这将会在与app同级目录下生成一个migrations文件夹，该文件夹一般包括了versions文件夹（其中是每次进行数据库迁移的脚本）和env.py文件（当使用`migrate.init_app(app, db)`的时候就是将app和数据库注入alembic环境中，然后在env.py文件中使用到这些被注入的对象）。  
+```bash 
+# 生成数据库迁移脚本
+flask db migrate -m "Add country field to UserLocation"
+```
+这将会在migrations/versions文件夹下生成一个新的迁移脚本，该脚本包含了对数据库结构的修改。  
+```bash
+# 应用数据库迁移
+flask db upgrade
+``` 
+这个命令将会执行上一步生成的迁移脚本，将数据库结构更新为最新的版本。  
+
+***总结来讲就是讲就是在app初始化文件中将app本身和数据库使用迁移对象绑定起来（正式因为绑定app中的数据模型文件，即app/models/*.py才会被迁移工具识别）。然后使用命令行工具自动化进行数据库迁移即可。***
