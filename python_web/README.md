@@ -5,4 +5,5 @@
 </div>
 
 - [SQLAlchemy](/python_web/SQLAlchemy.md)
-- [Flask](/python_web/flask.md)
+- [Flask](/python_web/flask.md)  
+- [sqlite3](/python_web/sqlite3.md)

@@ -200,5 +200,39 @@ def chat():
 </div>
 {% endblock %}
 ```
-在jinja的这些括号中，完全使用的就是python的语法，比如上述例子中的messages就是`chat`视图函数中定义的一个列表。  
+在jinja的这些括号中，完全使用的就是python的语法，比如上述例子中的messages就是`chat`视图函数中定义的一个列表。   
 
+# 写在最后  
+最后web服务器写完之后，都是需要运行起来接收请求的。Flask内置了一个简单的开发服务器，通过Flask类的`.run()`方法来启动。    
+```python
+# /__init__.py
+from flask import Flask, render_template
+app = Flask(__name__)
+####省略一系列代码
+```
+```python
+# app.py 
+from app import app 
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
+```
+其中`debug=True`表示开启调试模式，因为是开发服务器，一般只用于测试开发，不建议在生产环境中使用。因为：1. 这个flask内置服务器默认单线程，无法处理高并发请求；2. 安全性较低，容易受到攻击。3. 没有进程管理功能，无法自动重启等。一般如果直接使用flask内置服务器，都会提醒：`WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.`   
+这里面提到的production server，是指WSGI服务器（Web Server Gateway Interface），是Python Web应用和Web服务器之间的一种接口标准。常见的WSGI服务器有Gunicorn、uWSGI等。  
+简单理解就是WSGI服务器来处理客户端的请求，然后将请求转发给Flask应用处理。WSGI服务器在处理并发请求、负载均衡、安全性更为专业，实际上就是将专业的工作交给专业的工具来做。   
+简单介绍一下如何使用Gunicorn来运行Flask应用：  
+1. 首先安装python的Gunicorn包。
+2. 在项目的根目录下创建一个`wsgi.py`文件，内容如下：  
+```python
+from app import app
+application = app
+```
+3. 然后在命令行中运行以下命令来启动Gunicorn服务器：  
+```bash
+gunicorn -w 4 -b 0.0.0.0:5000 wsgi:application --access-logfile - --error-logfile -
+```
+其中，  
+`-w 4`表示启动4个工作进程；  
+`-b 0.0.0.0:5000`表示绑定到0.0.0.0的5000端口；  
+`wsgi:application`表示使用`wsgi.py`文件中的`application`对象；  
+`--access-logfile -`和`--error-logfile -`表示将访问日志和错误日志输出到标准输出（即控制台）。也可以将-换成具体的日志文件路径。    
