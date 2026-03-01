@@ -48,7 +48,7 @@ llm的回复也进行了格式化。对于格式化的回复，agent这个程序
 ![BV1aeLqzUE6L-[07:00]](./images/f670df91-9ed9-4531-8d53-395087ce69f0-8.png)  
 
 
-MCP实际上规范agent和tool的交互。  
+MCP实际上规范了agent和tool的交互。  
 ![BV1aeLqzUE6L-[07:23]](./images/f670df91-9ed9-4531-8d53-395087ce69f0-9.png)  
 最开始将函数写在与agent同一个进程中。后来发现将工具函数放在server中，暴露api供各个客户端使用可以使得通用性大大增加。  
 ![BV1aeLqzUE6L-[08:08]](./images/f670df91-9ed9-4531-8d53-395087ce69f0-11.png)  

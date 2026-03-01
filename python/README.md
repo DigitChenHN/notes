@@ -3,5 +3,7 @@
 </div>
 
 - [装饰器](/python/decorator.md)
-- [简单的内置函数](/python/built-in.md)
+- [简单的内置函数](/python/built_in.md)
 - [logging日志](/python/python%20logging模块/python%20logging模块.md)
+- [uv--环境管理工具](/python/uv_python环境管理工具/uv_新一代python环境管理工具.md)
+- [python虚拟环境管理](/python/python环境管理.md)
