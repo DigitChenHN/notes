@@ -7,3 +7,4 @@
 
 - [在云服务器上安装和使用Nginx](/my_zhihu/(20250313)在云服务器上安装和使用Nginx_lambda.md)
 - [使用云服务器搭建Web服务器](/my_zhihu/(20250303)使用云服务器搭建Web服务器_lambda/(20250303)使用云服务器搭建Web服务器_lambda.md)
+- [关于docker的初探和一些注意事项](/my_zhihu/关于docker的一些注意事项-lambda的文章.md)

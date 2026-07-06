@@ -89,13 +89,13 @@ Environment=KEY=value  # 设置环境变量
 WantedBy=multi-user.target  # 定义服务启动级别
 ```
 
-一般修改、新建一个单元服务之后需要重新`sudo systemctl daemon-reload`重新加载systemd单元文件。
+一般修改、新建一个单元服务之后需要重新`sudo systemctl daemon-reload`重新加载systemd单元文件。  
 
 ### 服务日志
 
-在 Linux 系统中，使用`systemctl`启动的服务（如 Flask 应用）默认会将标准输出（stdout）和标准错误（stderr）重定向到系统的日志服务（通常是`journald`）。
+在 Linux 系统中，使用`systemctl`启动的服务（如 Flask 应用）默认会将标准输出（stdout）和标准错误（stderr）重定向到系统的日志服务（通常是`journald`）。  
 
-journalctl是systemd中用来管理日志的工具。
+journalctl是systemd中用来管理日志的工具。  
 
 ```text
 # 查看完整的服务日志
@@ -123,11 +123,20 @@ journalctl -u xxxx.service --since today
 
 -   `sudo service xxx start` 启动xxx
 
-### 网络相关
+## 网络相关
 
 netstat是一个非常常用的工具，可以用来查看网络连接、路由表、接口统计信息等。
 
 经常搭配grep（global regular expression）
+
+## grep（global regular expression）
+grep是一个利用正则表达式进行文本搜索的命令行工具。正则表达式最早就是通过Unix中的工具软件如grep、sed等推广开来的。  
+grep的基本语法如下：
+```
+grep [选项] 模式 [文件]
+```
+其中，模式即用[正则表达式](/regex.md)进行匹配的模式。  
+虽然正则表达式是跨语言的文本匹配模式，但是[不同语言和工具对正则表达式的支持不同](/regex.md/#高级特性)。对于grep，一般有三种模式：基本正则表达式（BRE）、扩展正则表达式（ERE）和Perl兼容正则表达式（PCRE）。默认情况下，grep使用基本正则表达式（BRE），选项`-E`可以启用扩展正则表达式（ERE），选项`-P`可以启用Perl兼容正则表达式（PCRE）。  
 
 
 

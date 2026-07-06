@@ -5,6 +5,7 @@
 - [深度学习](deep_learning/README.md)
 - [我的知乎](my_zhihu/README.md)
 - [数据结构与算法](数据结构与算法/README.md)
+- [Linux](Linux/README.md)
 - [blender](blender/README.md)
 - [regex](regex.md)
 - [mysql](mySQL.md)
