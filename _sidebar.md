@@ -17,4 +17,5 @@
 - [natural language processing](natural_language_process/README.md)
 - [llm and agents](llm_and_agent/README.md)
 - [git](git/README.md)
+- [医学常识](医学常识/README.md)
 - [暗黑地牢](护肤/README.md)

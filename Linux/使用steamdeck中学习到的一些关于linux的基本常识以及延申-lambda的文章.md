@@ -1,12 +1,12 @@
 ---
 id: "25443657804"
-title: "使用steamdeck中学习到的一些关于linux的基本常识以及延申"
-author: "lambda"
+title: 使用steamdeck中学习到的一些关于linux的基本常识以及延申
+author: lambda
 type: zhihu-article
-source: "https://zhuanlan.zhihu.com/p/25443657804/preview?comment=0&catalog=0"
-created: "2025-02-21 20:39"
-updated: "2026-05-14 20:41"
-downloaded: "2026-05-14"
+source: https://zhuanlan.zhihu.com/p/25443657804/preview?comment=0&catalog=0
+created: 2025-02-21 20:39
+updated: 2026-07-07
+downloaded: 2026-05-14
 ---
 1.  常见的软件后缀有.rpm、.deb，其中rpm是redhat package manager的缩写，对应red hat linux系列的系统，比如centos；而.deb是debian，对应的是Debian系列的系统，比如Debian、Ubuntu。这些文件本质上是压缩文件，一般包含了软件的二进制文件、依赖信息、配置文件等。对应的archlinux上的软件后缀.pkg.tar.zst。
 2.  常见的包管理工具：arch linux——pacman、flatpak；debian——apt（advanced packaging tool）、dpkg（package manager for Debian）；redhat linux——yum（yellow update manager）、RPM（redhat package manager）。
@@ -62,7 +62,11 @@ systemd 的服务文件通常存放在以下两个目录中：
 -   **用户级服务**： `~/.config/systemd/user/`  
     适用于当前用户的服务（需启用用户级 systemd）。
 
-推荐将服务文件放在 `/etc/systemd/system/` 目录下。
+推荐将服务文件放在 `/etc/systemd/system/` 目录下。  
+
+
+> `systemctl edit --force xxx`可以创建在与服务文件同目录下创建一个`xxx.service.d`文件夹，然后在文件夹中创建一个`override.conf`文件，文件中的内容会合并到服务文件中，作为扩展。这个命令的使用场景一般是不希望破坏原service文件的结构，比如.service文件是软件自动生成的，如果想对软件的进行一些自定义的管理，一般就可以使用这个命令。   
+> `systemctl cat xxx`可以用于查看xxx服务当前执行的.server单元文件  
 
 ### 服务文件的基本结构
 
@@ -127,7 +131,8 @@ journalctl -u xxxx.service --since today
 
 netstat是一个非常常用的工具，可以用来查看网络连接、路由表、接口统计信息等。
 
-经常搭配grep（global regular expression）
+经常搭配grep（global regular expression）工具用来查看特定网络连接信息。
+
 
 ## grep（global regular expression）
 grep是一个利用正则表达式进行文本搜索的命令行工具。正则表达式最早就是通过Unix中的工具软件如grep、sed等推广开来的。  
@@ -136,7 +141,45 @@ grep的基本语法如下：
 grep [选项] 模式 [文件]
 ```
 其中，模式即用[正则表达式](/regex.md)进行匹配的模式。  
-虽然正则表达式是跨语言的文本匹配模式，但是[不同语言和工具对正则表达式的支持不同](/regex.md/#高级特性)。对于grep，一般有三种模式：基本正则表达式（BRE）、扩展正则表达式（ERE）和Perl兼容正则表达式（PCRE）。默认情况下，grep使用基本正则表达式（BRE），选项`-E`可以启用扩展正则表达式（ERE），选项`-P`可以启用Perl兼容正则表达式（PCRE）。  
+虽然正则表达式是跨语言的文本匹配模式，但是[不同语言和工具对正则表达式的支持不同](/regex.md/#高级特性)。对于grep，一般有三种模式：基本正则表达式（BREs, basic regular expression）、扩展正则表达式（EREs, extended regular expression）和Perl兼容正则表达式（PREs, Perl regular expression）。默认情况下，grep使用基本正则表达式（BREs），选项`-E`可以启用扩展正则表达式（EREs），选项`-P`可以启用Perl兼容正则表达式（PREs）。   
+BREs与[python正则表达式](/regex.md)存在区别，具体可以参考[这篇博客](https://blog.csdn.net/yufenghyc/article/details/51078107)。  
+以下是一些常用、但存在区别的匹配模式：  
+
+| 字符  | 说明                          | Basic RegEx | Extended RegEx | Perl RegEx | python RegEx |
+| --- | --------------------------- | ----------- | -------------- | ---------- | ------------ |
+| ()  | 匹配表达式（即分组）                  | 不支持         | ()             | ()         | ()           |
+| {n} | 匹配子表达式n次                    | 不支持         | {n}            | {n}        | {n}          |
+| \d  | 匹配从0到9中的任意一个数字字符（等价于\[0-9]) | 不支持         | 不支持            | \d         | \d           |
+| \D  | 匹配非数字字符                     | 不支持         | 不支持            | \D         | \D           |
+| \s  | 匹配任何空白字符                    | 不支持         | 不支持            | \s         | \s           |
+| \S  | 匹配任何非空白字符                   | 不支持         | 不支持            | \S         | \S           |
+
+## swap
+使用云服务器的过程中可能会发现购买的内存不够。这时候可以考虑虚拟内存。  
+在Linux等类Unix系统中，swap是虚拟内存的重要组成部分。Swap是实现虚拟内存的一种方法，具体来讲是在磁盘中建立虚拟文件或者虚拟分区，当物理内存不足是，将不活跃的内存页存放到swap空间中。  
+
+### 创建swap文件
+
+```
+# 创建 2G swap 文件（缓解内存压力）
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile 
+sudo mkswap /swapfile
+sudo swapon /swapfile
+```
+
+```
+# 查看当前swap
+swapon --show
+```
+
+```
+# 是swap文件空间永久生效
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab # fstab 是file system table,用于管理系统启动时的自动挂载
+```
+
+通过`free -h`可以查看当前系统内存使用情况（包括虚拟内存）
+
 
 
 
@@ -149,8 +192,8 @@ grep [选项] 模式 [文件]
 ```text
 LANG=en_US.UTF-8
 LC_CTYPE=zh_CN.UTF-8
-GTK_IM_MODULE=fcitx
-QT_IM_MODULE=fcitx
+GTK_IM_MODULE=fcitx # 设置以GTK作为GUI框架的软件的input method module为fcitx
+QT_IM_MODULE=fcitx # 设置以QT作为GUI框架的软件的input method module为fcitx，比如steamos上的Kate
 XMODIFIERS=@im=fcitx
 ```
 
