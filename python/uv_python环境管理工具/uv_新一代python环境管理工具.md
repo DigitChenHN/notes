@@ -23,7 +23,7 @@ uv的思维：每一个项目文件夹是一个独立项目，需要建立一个
 ## 安装库  
 `uv add package_name`命令会将一个名为package_name的包安装到当前项目的虚拟环境中，并且会将这个包的信息记录在pyproject.toml文件中。   
 ![BV1JxLEzGEq5-[02:45]](./images/1959c736-807c-496e-9409-13a92f55d92b-6.png)   
-并且会创建一个uv.lock文件来记录安装这个包的过程的完整信息，有了这个文件就可以完整开发者的环境，从而顺利的运行代码。  
+并且会创建一个uv.lock文件来记录安装这个包的过程的完整信息，有了这个文件就可以完整地记录开发者的配置环境，从而顺利的运行开发者提供的代码。  
 
 ## uv具体管理环境的方式  
 uv主要通过`.python-version`和`pyproject.toml`两个文件管理python。`.python-version`文件中记录了当前项目使用的python版本，`pyproject.toml`文件中记录了当前项目安装的库和版本要求。  
